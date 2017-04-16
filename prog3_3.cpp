@@ -24,13 +24,20 @@ int main(int argc, char** argv) {
 
     luaL_dofile(L, file.c_str()); // tells C about the lua file.
 
-    while(1 == 1) {
-        printf("> ");
+    printf("> ");
 
-        fgets(buff, 65, stdin);
+    fgets(buff, 65, stdin);
 
-        luaL_dostring(L, buff); 
-    }
+    lua_getglobal(L, "InfixToPostfix");
+    lua_pushstring(L, buff);
+    lua_call(L, 1, 1);
+
+    luaL_checkstring(L, 1);
+
+    string postfix = lua_tostring(L, -1);
+    lua_pop(L, 1);
+
+    cout << postfix + "\n";
 
     lua_close(L);
 

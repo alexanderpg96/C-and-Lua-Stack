@@ -1,7 +1,5 @@
 function InfixToPostfix(str)
 
-    print("running")
-
     stack = {}
     stackSize = 0
 
@@ -13,68 +11,58 @@ function InfixToPostfix(str)
     output = ""
 
     for token in string.gmatch(str, "[^%s]+") do
-        print("in for loop")
-        table.insert(stack, token)
-        stackSize = stackSize + 1
-    end
-
-    print(stackSize)
-
-    while stackSize > 0 do
-        popped = table.remove(stack)
-        stackSize = stackSize - 1;
-
-        print("In while")
 
         -- Check if the first token is an operator
 
-        if string.match(popped, "+") or string.match(popped, "-") or string.match(popped, "*") or string.match(popped, "/") then
-            print("in operator if")
+        if string.match(token, "+") or string.match(token, "-") or string.match(token, "*") or string.match(token, "/") then
 
             -- Operator stack is empty
 
             if operatorSize == 0 then
-                print("inserted empty operator")
-                table.insert(operators,popped)
+                table.insert(operators,token)
                 operatorSize = operatorSize + 1
             else
-                print("dealing with operators")
-                bool = true
-                while bool do
+                bool = 1
+                while bool == 1 do
                     precedence = 0
-                    index = operatorSize 
+                    poppedPrec = 0 
+
+                    if operatorSize == 0 then
+                        table.insert(operators,token)
+                        operatorSize = operatorSize + 1
+                        bool = 0
+                        break
+                    end
         
                     -- Set precedence of top operator on stack
 
-                    if string.match(operators[index],"*")          then precedence = 3
-                        elseif string.match(operators[index],"/")  then precedence = 3
-                        elseif string.match(operators[index],"-")  then precedence = 2
-                        else                                            precedence = 2
-                    end
+                    if string.match(operators[operatorSize],"*")  then precedence = 3 end
+                    if string.match(operators[operatorSize],"/")  then precedence = 3 end
+                    if string.match(operators[operatorSize],"-")  then precedence = 2 end
+                    if string.match(operators[operatorSize],"+")  then precedence = 2 end
 
                     -- Set precedence of popped operator
 
-                    if string.match(popped,"*")          then precedence = 3
-                        elseif string.match(popped,"/")  then precedence = 3
-                        elseif string.match(popped,"-")  then precedence = 2
-                        else                                  precedence = 2
-                    end
+                    if string.match(token,"*")  then poppedPrec = 3 end
+                    if string.match(token,"/")  then poppedPrec = 3 end
+                    if string.match(token,"-")  then poppedPrec = 2 end
+                    if string.match(token,"+")  then poppedPrec = 2 end
         
                     -- If the top operator has higer precedence, pop and push; loop again
 
-                    if precedence > popped then
+                    if precedence >= poppedPrec then
                         table.insert(postfix, table.remove(operators))
                         postSize = postSize + 1
                         operatorSize = operatorSize - 1
                     else
-                        table.insert(operators, popped)
+                        table.insert(operators, token)
                         operatorSize = operatorSize + 1
+                        bool = 0
                     end
                 end
             end
         else
-            print("Inserted")
-            table.insert(postfix, popped)
+            table.insert(postfix, token)
             postSize = postSize + 1
         end
     end
@@ -92,11 +80,7 @@ function InfixToPostfix(str)
         i = i + 1
     end
 
-    print(output)
+    return output
     
-end
-
-function PrintHello()
-    print("Hi")
 end
 
