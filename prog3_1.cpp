@@ -24,10 +24,6 @@ int main(int argc, char** argv) {
 
     luaL_dofile(L, file.c_str()); // tells C about the lua file.
 
-    while(1 == 1) {
-        luaL_dostring(L, buff); 
-    }
-
     lua_close(L);
 
 }
