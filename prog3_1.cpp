@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    cout << "Assignment #3-3, Alexander Pearson-Goulart, pearsongoulart@gmail.com\n";
+    cout << "Assignment #3-1, Alexander Pearson-Goulart, pearsongoulart@gmail.com\n";
 
     lua_State *L;
 
